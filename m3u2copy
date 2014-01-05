@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# This script copies all files in the .m3u file into the folder <folder> :
+# m3u2copy <file.m3u> <folder>
+
+if [ -z "$2" ]
+then
+    echo "m3u2copy <file.m3u> <folder>"
+    exit 1
+fi
+cat "$1" | grep "^[^#]" | while read -r line
+do
+    echo "$line" | echo -e $(sed 's/%/\\x/g')
+    cp "$(echo "$line" | echo -e $(sed 's/%/\\x/g'))" $2
+done;
+    
+echo "Files in $2"
